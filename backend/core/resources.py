@@ -6,7 +6,6 @@ from contextlib import asynccontextmanager
 from typing import List, Optional
 import numpy as np
 import pandas as pd
-from sentence_transformers import SentenceTransformer
 from xgboost import XGBRegressor
 from google import genai
 from fastapi import FastAPI
@@ -17,6 +16,7 @@ from backend.core.config import (
     RAG_DIR,
     GEMINI_API_KEY,
     GEMINI_MODEL,
+    GEMINI_EMBEDDING_MODEL,
 )
 
 
@@ -25,7 +25,7 @@ class Resources:
     feature_names: List[str] = []
     default_hospital_data: Optional[pd.DataFrame] = None
     active_hospital_data: Optional[pd.DataFrame] = None
-    active_filename: str = "Operational data.xlsx"
+    active_filename: str = "Operational data.csv"
     is_default_active: bool = True
     tail_history: Optional[pd.DataFrame] = None
     capacity_reference: float = 0.0
@@ -33,7 +33,6 @@ class Resources:
     rag_embeddings: Optional[np.ndarray] = None
     policy_df: Optional[pd.DataFrame] = None
     rag_text_column: str = "text"
-    embedding_model: Optional[SentenceTransformer] = None
     gemini_client: Optional[genai.Client] = None
 
 
@@ -104,8 +103,7 @@ def load_all_resources():
         raise ValueError(f"Could not identify text column in {csv_path}")
     resources.rag_text_column = text_col
 
-    print("[HOSP-AI] Initializing SentenceTransformer (all-MiniLM-L6-v2)...")
-    resources.embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+    print("[HOSP-AI] Configured Gemini Embedding 2 for ultra-low memory RAG.")
 
     if GEMINI_API_KEY:
         print("[HOSP-AI] Initializing Google GenAI Client with model:", GEMINI_MODEL)

@@ -12,12 +12,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # Load environment variables from .env
 load_dotenv(BASE_DIR / ".env")
 
-# LLM Configuration
+# LLM & Embedding Configuration
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest")
+GEMINI_EMBEDDING_MODEL = os.getenv("GEMINI_EMBEDDING_MODEL", "gemini-embedding-2")
 
 # Asset & Model Paths
 MODEL_PATH = BASE_DIR / "models" / "xgb_model.json"
 DATA_PATH = BASE_DIR / "Operational data.xlsx"
+CSV_DATA_PATH = BASE_DIR / "Operational data.csv"
 RAG_DIR = BASE_DIR / "hosp_ai_embeddings"
 DIST_PATH = BASE_DIR / "dist"

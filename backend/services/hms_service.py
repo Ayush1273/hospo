@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Optional, Union, Dict, Any
 import numpy as np
 import pandas as pd
-from backend.core.config import DATA_PATH
+from backend.core.config import DATA_PATH, CSV_DATA_PATH
 
 
 REQUIRED_HOSPITAL_COLUMNS = [
@@ -64,9 +64,12 @@ def read_hospital_file(
                 "Unsupported file format. Please upload an Excel (.xlsx, .xls) or CSV (.csv) file."
             )
     else:
-        if not DATA_PATH.exists():
-            raise FileNotFoundError(f"Default HMS file not found at: {DATA_PATH}")
-        df = pd.read_excel(DATA_PATH, sheet_name="Hospital_Operational_Data")
+        if CSV_DATA_PATH.exists():
+            df = pd.read_csv(CSV_DATA_PATH)
+        elif DATA_PATH.exists():
+            df = pd.read_excel(DATA_PATH, sheet_name="Hospital_Operational_Data")
+        else:
+            raise FileNotFoundError(f"Default HMS file not found at: {CSV_DATA_PATH} or {DATA_PATH}")
 
     # Column validation
     missing = [c for c in REQUIRED_HOSPITAL_COLUMNS if c not in df.columns]
