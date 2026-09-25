@@ -33,8 +33,9 @@ dist-ssr/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+/lib/
+/lib64/
+!client/src/lib/
 parts/
 sdist/
 var/
